@@ -77,4 +77,19 @@ public class ApiTestExercises {
       .body("userId", equalTo(1))
       .body("title", Matchers.containsString("dolorem"));
 }
+
+  @Test
+  public  void getRequestCheckLength(){
+
+    String url="https://jsonplaceholder.typicode.com/posts/10";
+
+    Response response= given().when().get(url);
+
+    response.prettyPrint();
+
+    response.then().assertThat().statusCode(200)
+        .body("title", Matchers.notNullValue())
+        .body("body.length()", Matchers.greaterThan(30));
+
+  }
 }
