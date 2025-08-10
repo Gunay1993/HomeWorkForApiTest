@@ -1,9 +1,12 @@
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.matchesPattern;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,5 +62,19 @@ public class ApiTestExercises {
         .body("title",equalTo("Yeni Post"))
         .body("userId",equalTo(9));
 
+}
+
+@Test
+  public  void getRequestCheckTitle(){
+
+    String url="https://jsonplaceholder.typicode.com/posts/8";
+
+    Response response= given().when().get(url);
+    response.prettyPrint();
+
+    //assertion
+  response.then().assertThat().statusCode(200)
+      .body("userId", equalTo(1))
+      .body("title", Matchers.containsString("dolorem"));
 }
 }
