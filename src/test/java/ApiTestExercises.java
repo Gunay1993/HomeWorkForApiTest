@@ -92,4 +92,32 @@ public class ApiTestExercises {
         .body("body.length()", Matchers.greaterThan(30));
 
   }
+
+  @Test
+  public void postRequestCheckTextandBody() {
+
+    String url="https://jsonplaceholder.typicode.com/posts";
+
+    JSONObject requestBody = new JSONObject();
+
+
+
+    requestBody.put("title", "RestAssured testi");
+    requestBody.put("body", "Bu bir test məqsədli uzun mətnli POST sorğusudur.");
+    requestBody.put("userId", 20);
+    System.out.println(requestBody.toString());
+
+    Response response=given().contentType(ContentType.JSON)
+        .when().body(requestBody.toString())
+        .post(url);
+
+    response.prettyPrint();
+
+    //assertion
+    response.then().assertThat().statusCode(201)
+        .contentType(ContentType.JSON)
+        .body("body",Matchers.startsWith("Bu bir test"))
+        .body("userId",Matchers.greaterThan(10));
+
+  }
 }
